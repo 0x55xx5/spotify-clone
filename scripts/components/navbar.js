@@ -123,7 +123,7 @@ const isThisAdmin =async () => {
   await fetch('http://localhost:5173/api/authentication/userdata', {
     method: 'POST',
     mode: 'cors',
-    headers: headers,
+  //  headers: headers,
     body: JSON.stringify({"session_id": getCookie("session_id")}),
   })
     .then((response) => response.json())
@@ -134,11 +134,11 @@ const isThisAdmin =async () => {
 
 
       if (data.hasOwnProperty('status') && data['status'] === 'success') {
-        if (data.dataUser.users.isAdmin === "1") {
+        if (data.dataUser.isadmin === "1") {
           thisIsAdmin = "admin";
         }
         hasLogin = true;
-        name = data.dataUser.users.username;
+        name = data.dataUser.username;
       }
 
       document.getElementById("navbar").innerHTML = navbarLayout(thisIsAdmin, hasLogin);
@@ -147,24 +147,7 @@ const isThisAdmin =async () => {
     .catch((error) => {
       console.error('Error:', error);
     });
- /* postAPI('http://localhost:5173/api/authentication/userdata', (data) => {
-    const userdata = JSON.parse(data);
-    let thisIsAdmin = "user";
-    let hasLogin = false;
-    let name = "Guest";
-
-
-    if (userdata.hasOwnProperty('status') && userdata['status'] === 'success') {
-      if (userdata.dataUser.users.isAdmin === "1") {
-        thisIsAdmin = "admin";
-      }
-      hasLogin = true;  
-      name = userdata.dataUser.users.username;
-    }
-
-    document.getElementById("navbar").innerHTML = navbarLayout(thisIsAdmin, hasLogin);
-    document.getElementById("user-panel").innerHTML = userPanel(thisIsAdmin, name);
-  },populateData);*/
+ 
 };
 
 isThisAdmin();
