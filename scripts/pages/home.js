@@ -1,9 +1,9 @@
 const songsLayout = (page) => {
   if (page > 0) {
-    getAPI(`./api/song/getallsongs.php?page=${page}`, (data) => {
+    getAPI(`http://localhost:5173/api/song/getallsongs?page=${page}`, (data) => {
       const jsonData = JSON.parse(data);
-      songs = jsonData.payload;
-      str = `<div class="page-title">Sepotipayi
+      songs = jsonData;
+      str = `<div class="page-title">KKKpotipayi
             </div>
             <div id="songs" class="song-list-container">`;
 

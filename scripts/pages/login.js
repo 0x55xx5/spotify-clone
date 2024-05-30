@@ -1,12 +1,11 @@
 const callbackLogin = (data) => {
-    // parse the data from backend
     const result = JSON.parse(data);
 
     // check the status
     if (result.hasOwnProperty('status') && result['status'] === 'success') {
         deleteCookie();
-
-        const session_id = result['session']['sessionToken'];
+        //存入後端發放的驗證token到 cookie
+        const session_id = result['sessionToken'];
         setCookie(session_id, 1800);
 
         window.location = '/';
@@ -18,11 +17,11 @@ const callbackLogin = (data) => {
 const logined = (e) => {
     e.preventDefault();
 
-    // get the input from form
+    //表單帳密
     const dataLogin = new FormData(e.target);
 
-    // post to checking the login to backend
-    postAPI('/api/authentication/login.php', callbackLogin, dataLogin);
+    // formpost到api
+    postAPI('http://localhost:5173/api/authentication/login', callbackLogin, dataLogin);
 
     return;
 }

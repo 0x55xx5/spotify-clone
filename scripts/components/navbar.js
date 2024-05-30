@@ -109,24 +109,62 @@ const logout = () => {
   window.location.href = `${window.location.protocol}//${window.location.host}/login.html`;
 };
 
-const isThisAdmin = () => {
-  getAPI('/api/authentication/userdata.php', (data) => {
+
+const populateData = () => {
+  const albumDetail = new FormData();
+  albumDetail.append('session_id',  getCookie("session_id"));
+  return albumDetail;
+};
+const headers = {'Content-Type':'application/json',
+                    'Access-Control-Allow-Origin':'*',
+                    'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'}
+
+const isThisAdmin =async () => {
+  await fetch('http://localhost:5173/api/authentication/userdata', {
+    method: 'POST',
+    mode: 'cors',
+    headers: headers,
+    body: JSON.stringify({"session_id": getCookie("session_id")}),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      let thisIsAdmin = "user";
+      let hasLogin = false;
+      let name = "Guest";
+
+
+      if (data.hasOwnProperty('status') && data['status'] === 'success') {
+        if (data.dataUser.users.isAdmin === "1") {
+          thisIsAdmin = "admin";
+        }
+        hasLogin = true;
+        name = data.dataUser.users.username;
+      }
+
+      document.getElementById("navbar").innerHTML = navbarLayout(thisIsAdmin, hasLogin);
+      document.getElementById("user-panel").innerHTML = userPanel(thisIsAdmin, name);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+ /* postAPI('http://localhost:5173/api/authentication/userdata', (data) => {
     const userdata = JSON.parse(data);
     let thisIsAdmin = "user";
     let hasLogin = false;
     let name = "Guest";
 
+
     if (userdata.hasOwnProperty('status') && userdata['status'] === 'success') {
-      if (userdata.dataUser.isAdmin === "1") {
+      if (userdata.dataUser.users.isAdmin === "1") {
         thisIsAdmin = "admin";
       }
       hasLogin = true;  
-      name = userdata.dataUser.username;
+      name = userdata.dataUser.users.username;
     }
 
     document.getElementById("navbar").innerHTML = navbarLayout(thisIsAdmin, hasLogin);
     document.getElementById("user-panel").innerHTML = userPanel(thisIsAdmin, name);
-  });
+  },populateData);*/
 };
 
 isThisAdmin();

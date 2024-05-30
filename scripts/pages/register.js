@@ -24,27 +24,7 @@ const callbackChecking = (data) => {
     }
 }
 
-const checkUsername = (e) => {
-    e.preventDefault();
 
-    const usernameData = new FormData();
-    usernameData.append('username', e.target.value);
-
-    postAPI('/api/authentication/checkusername.php', callbackChecking, usernameData);
-
-    return;
-}
-
-const checkEmail = (e) => {
-    e.preventDefault();
-
-    const emailData = new FormData();
-    emailData.append('email', e.target.value);
-
-    postAPI('/api/authentication/checkemail.php', callbackChecking, emailData);
-    
-    return;
-}
 
 const matchPass = () => {
     // get the value
@@ -62,7 +42,7 @@ const callbackRegisters = (data) => {
     if (result.hasOwnProperty('status') && result['status'] === 'success') {
         deleteCookie();
 
-        const session_id = result['session']['sessionToken'];
+        const session_id = result['sessionToken'];
         setCookie(session_id, 1800);
 
         window.location = '/';
@@ -79,7 +59,7 @@ const registered = (e) => {
         const dataRegister = new FormData(e.target);
 
         // post to checking the register to backend
-        postAPI('/api/authentication/register.php', callbackRegisters, dataRegister);
+        postAPI('http://localhost:5173/api/authentication/register', callbackRegisters, dataRegister);
     } else {
         alert('Password does not match!');
     }

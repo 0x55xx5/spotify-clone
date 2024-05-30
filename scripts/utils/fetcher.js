@@ -38,7 +38,7 @@ const postAPI = (endpoint, callback, data) => {
     };
     
     xhr.open("POST", endpoint);
-    
+
     const sessionId = getCookie("session_id");
     if (sessionId) {
         xhr.setRequestHeader("sessionToken", sessionId);
