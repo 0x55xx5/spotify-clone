@@ -12,6 +12,32 @@
   flex-direction: column;
   margin-top: .5%;
 }
+.genre-buttons{
+  gap: 1%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1%;
+}
+
+.genre-buttons> .genre-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f1f1f1;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.genre-buttons > .genre-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #c3e627;
+}
+.genre-buttons> .genre-button:hover {
+  background-color: #ccc;
+}
 
 .search-bar {
   /* float: left;

@@ -41,7 +41,7 @@ document.addEventListener("click", function(e) {
 });
 
 const playSong = (song_img, song_path, song_title, song_artist) => {
-    getAPI('/api/authentication/userdata.php', (data) => {
+    getAPI('http://localhost:5173/api/authentication/userdata', (data) => {
         const userdata = JSON.parse(data);
         if (userdata.hasOwnProperty('status') && userdata['status'] === 'error') {
             const ls = window.localStorage;

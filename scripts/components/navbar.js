@@ -109,12 +109,12 @@ const logout = () => {
   window.location.href = `${window.location.protocol}//${window.location.host}/login.html`;
 };
 
-
+/*
 const populateData = () => {
   const albumDetail = new FormData();
   albumDetail.append('session_id',  getCookie("session_id"));
   return albumDetail;
-};
+};*/
 const headers = {'Content-Type':'application/json',
                     'Access-Control-Allow-Origin':'*',
                     'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'}

@@ -14,7 +14,7 @@ const getCookie = (key) => {
     for (let i = 0; i < cookie.length; i++) {
         const value = cookie[i].split('=');
         if (key == value[0].trim()) {
-            return value[1];
+            return decodeURIComponent(value[1]);
         }
     }
     

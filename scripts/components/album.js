@@ -43,31 +43,12 @@ const updateAlbum = (e) => {
     );
   }
 }
-
-const populateData = () => {
-  const albumDetail = new FormData();
-  for (let i = 0; i < values.length; i++) {
-    if (values[i] !== "img_album") {
-      albumDetail.append(`${values[i]}`, document.querySelector(`#${values[i]}`).value);
-    }
-  }
-  albumDetail.append("album_id", new URLSearchParams(window.location.search).get("id"));
-  return albumDetail;
-};
-
-const callback = (resp) => {
-  const data = JSON.parse(resp);
-  if (data.hasOwnProperty("path") && data["path"] !== null) return data["path"];
-  return "";
-};
-
-const albumLayout = (role) => {
+const albumLayout =async (role) => {
   const id = new URLSearchParams(window.location.search).get("id");
-  getAPI(
-    `./api/album/getalbum.php?id=${id}`, (data) => {
-      const jsonData = JSON.parse(data);
-      const album = jsonData.payload;
-      
+  await fetch(`http://localhost:5173/api/album/getalbumDetails?id=${id}`)
+    .then(response => response.json())
+    .then( jsonData => {
+      const album = jsonData.data[0];
       if (role === "admin") {
         document.getElementById("song-detail").innerHTML = `
         <div class="album-detail-container">
@@ -121,30 +102,51 @@ const albumLayout = (role) => {
         `;
       }
 
-      getAPI(`./api/song/getsongs.php?album_id=${id}`, (data) => {
-        const jsonData = JSON.parse(data);
-        const songs = jsonData.payload;
-        str = `<div id="songs" class="song-list-container">`;
-        
-        str += songs.map(song =>
-          `<div class="song-list" data-value="${song.song_id}">
-            <div class="song-list-detail">
-              <img class="detail-img" src="${song.image_path}" alt=""/>
-              <div class="detail-song">
-                <label>${song.judul}</label>
-                <label>${song.penyanyi}</label>
+       fetch(`http://localhost:5173/api/album/getalbumSongs?album_id=${id}`)
+        .then(response => response.json())
+        .then(jsonData => {
+          const songs = jsonData.data;
+          console.log(songs);
+          str = `<div id="songs" class="song-list-container">`;
+
+          str += songs.map(song =>
+            `<div class="song-list" data-value="${song.id}">
+              <div class="song-list-detail">
+                <img class="detail-img" src="${song.image_path}" alt=""/>
+                <div class="detail-song">
+                  <label>${song.judul}</label>
+                  <label>${song.penyanyi}</label>
+                </div>
               </div>
-            </div>
-            <label class="label">${(song.duration/60) >> 0}:${("0" + song.duration%60).slice(-2)}</label>
-          </div>`
+              <label class="label">${(song.duration/60) >> 0}:${("0" + song.duration%60).slice(-2)}</label>
+            </div>`
           ).join("");
-          
-        str += `</div>`;
-        document.getElementById("page-container").insertAdjacentHTML("beforeend", str);
-      });
-    }
-  );
+
+          str += `</div>`;
+          document.getElementById("page-container").insertAdjacentHTML("beforeend", str);
+        });
+    });
+ 
 }
+
+const populateData = () => {
+  const albumDetail = new FormData();
+  for (let i = 0; i < values.length; i++) {
+    if (values[i] !== "img_album") {
+      albumDetail.append(`${values[i]}`, document.querySelector(`#${values[i]}`).value);
+    }
+  }
+  albumDetail.append("album_id", new URLSearchParams(window.location.search).get("id"));
+  return albumDetail;
+};
+
+const callback = (resp) => {
+  const data = JSON.parse(resp);
+  if (data.hasOwnProperty("path") && data["path"] !== null) return data["path"];
+  return "";
+};
+
+
 
 const deleteAlbum = () => {
     const id = new URLSearchParams(window.location.search).get("id");
@@ -164,18 +166,28 @@ const deleteAlbum = () => {
 }
 
 const isAlbumEditable = () => {
-  getAPI('/api/authentication/userdata.php', (data) => {
-    const userdata = JSON.parse(data);
-    let thisIsAdmin = "user";
+  fetch('http://localhost:5173/api/authentication/userdata', {
+    method: 'POST',
+    mode: 'cors',
+  //  headers: headers,
+    body: JSON.stringify({"session_id": getCookie("session_id")}),
+  })
+    .then(response => response.json())
+    .then(userdata => {
+      let thisIsAdmin = "user";
 
-    if (userdata.hasOwnProperty('status') && userdata['status'] === 'success') {
-      if (userdata.dataUser.isAdmin === "1") {
-        thisIsAdmin = "admin";
+      if (userdata.hasOwnProperty('status') && userdata['status'] === 'success') {
+        if (userdata.dataUser.isAdmin === "1") {
+          thisIsAdmin = "admin";
+        }
       }
-    }
 
-    albumLayout(thisIsAdmin);
-  });
+      albumLayout(thisIsAdmin);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  
 }
 
 const deleteFile = (path) => {
