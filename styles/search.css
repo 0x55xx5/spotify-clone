@@ -1,6 +1,6 @@
 .search-bar-container {
   width: 70%;
-  height: 10%;
+  height: 15%;
   position: relative;
   z-index: 3;
 }
@@ -12,24 +12,26 @@
   flex-direction: column;
   margin-top: .5%;
 }
-.genre-buttons{
+
+.genre-buttons {
   gap: 1%;
   display: flex;
-  justify-content: center;
-  margin-top: 1%;
+  width:100%;
+  margin-top: .5%;
 }
 
-.genre-buttons> .genre-button {
-  display: inline-block;
-  padding: 10px 20px;
+.genre-buttons > .genre-button {
+  width: 15%;
+  padding: 2%;
   background-color: #f1f1f1;
   color: #333;
   border: none;
   border-radius: 5px;
   text-decoration: none;
-  font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-align: center;
+  
 }
 .genre-buttons > .genre-button:focus {
   outline: none;

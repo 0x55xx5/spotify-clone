@@ -3,7 +3,7 @@ const userLayout = (page) => {
         getAPI(`./api/user/getallusers.php?page=${page}`, (data) => {
             const jsonData = JSON.parse(data);
             users = jsonData.payload;
-            str = `<div class="page-title">Users of Sepotipayi
+            str = `<div class="page-title">Users of Kpotify
                 </div>
                 <div class="info">
                     <div class="info-column">Username</div>

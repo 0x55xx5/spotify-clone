@@ -57,17 +57,7 @@ const navbarLayout = (role, loginStatus) => {
               <div class="navbar-text">${loginStatus === true ? "Log Out" : "Log In"}</div>
             </div>
           </div>
-          <div class="section-playlist">
-            <div class="playlist-name navbar-text" onClick="alert('13520044 - Adiyansa Prasetya Wicaksana')">
-              playlist pargoy anca
-            </div>
-            <div class="playlist-name navbar-text" onClick="alert('13520083 - Sarah Azka Arief')">
-              sarah bertilawah <3
-            </div>
-            <div class="playlist-name navbar-text" onClick="alert('13520107 - Azka Syauqy Irsyad')">
-              cepmek brsama azka
-            </div>
-          </div>
+          
         </div>
       `;
 };

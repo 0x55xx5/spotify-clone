@@ -155,7 +155,7 @@ const isDataValid = () => {
 
 const populateAlbum = () => {
   getAPI(
-    `./api/album/getallalbums.php`, (data) => {
+    `./api/album/getallalbums`, (data) => {
       const jsonData = JSON.parse(data);
       const albums = jsonData.payload;
       const albumSelect = document.getElementById("album_lagu");
@@ -175,9 +175,10 @@ const populateAlbum = () => {
 const songLayout = (role) => {
   const id = new URLSearchParams(window.location.search).get("id");
   getAPI(
-    `./api/song/getsong.php?id=${id}`, (data) => {
+    `http://localhost:5173/api/song/getsongbyid?id=${id}`, (data) => {
       const jsonData = JSON.parse(data);
-      const song = jsonData.payload;
+   
+      const song = jsonData.data;
       if (role === "admin"){
         document.getElementById("page").innerHTML = `
         <div class="song-detail-header">
@@ -280,21 +281,33 @@ const songLayout = (role) => {
     },
   );
 };
+const isSongEditable =async () => {
+  await fetch('http://localhost:5173/api/authentication/userdata', {
+    method: 'POST',
+    mode: 'cors',
+  //  headers: headers,
+    body: JSON.stringify({"session_id": getCookie("session_id")}),
+  })
+    .then(response => response.json())
+    .then(data => {
+      const userdata = data;
+      let thisIsAdmin = "user";
 
-const isSongEditable = () => {
-  getAPI('/api/authentication/userdata.php', (data) => {
-    const userdata = JSON.parse(data);
-    let thisIsAdmin = "user";
-
-    if (userdata.hasOwnProperty('status') && userdata['status'] === 'success') {
-      if (userdata.dataUser.isAdmin === "1") {
-        thisIsAdmin = "admin";
+      if (userdata.hasOwnProperty('status') && userdata['status'] === 'success') {
+        if (userdata.dataUser.isAdmin === "1") {
+          thisIsAdmin = "admin";
+        }
       }
-    }
 
-    songLayout(thisIsAdmin);
-  });
+      songLayout(thisIsAdmin);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  
 };
+
+
 
 const deleteSong = () => {
   const id = new URLSearchParams(window.location.search).get("id");

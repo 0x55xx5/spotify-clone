@@ -4,7 +4,7 @@ const songsLayout =async (page) => {
       .then(response => response.json())
       .then(jsonData => {
         songs = jsonData;
-        str = `<div class="page-title">KKKpotipayi
+        str = `<div class="page-title">KKKpotify
               </div>
               <div id="songs" class="song-list-container">`;
 
