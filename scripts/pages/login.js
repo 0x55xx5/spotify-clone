@@ -21,7 +21,7 @@ const logined = async(e) => {
     const dataLogin = new FormData(e.target);
 
     // formpost到api
-    await fetch('http://localhost:5173/api/authentication/login', {
+    await fetch('http://svelte-demo-mu.vercel.app/api/authentication/login', {
         method: 'POST',
         body: dataLogin
     })

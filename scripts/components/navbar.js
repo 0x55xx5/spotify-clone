@@ -112,7 +112,7 @@ const headers = {'Content-Type':'application/json',
 
 
 const isThisAdmin =async () => {
-  await fetch('http://localhost:5173/api/authentication/userdata', {
+  await fetch('http://svelte-demo-mu.vercel.app/api/authentication/userdata', {
     method: 'POST',
     headers: {
       "apikey": getCookie("session_id")

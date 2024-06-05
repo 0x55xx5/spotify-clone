@@ -41,7 +41,7 @@ document.addEventListener("click", function(e) {
 });
 
 const playSong =async (song_img, song_path, song_title, song_artist) =>  {
-    await fetch('http://localhost:5173/api/authentication/userdata', {
+    await fetch('http://svelte-demo-mu.vercel.app/api/authentication/userdata', {
       method: 'POST',
       headers: {
         "apikey": getCookie("session_id")
@@ -80,7 +80,7 @@ const playSong =async (song_img, song_path, song_title, song_artist) =>  {
         .catch(error => {
             console.error('Error:', error);
         });
-  /* getAPI('http://localhost:5173/api/authentication/userdata', (data) => {
+  /* getAPI('http://svelte-demo-mu.vercel.app/api/authentication/userdata', (data) => {
         const userdata = JSON.parse(data);
         if (userdata.hasOwnProperty('status') && userdata['status'] === 'error') {
             const ls = window.localStorage;

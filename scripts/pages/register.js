@@ -59,7 +59,7 @@ const registered = (e) => {
         const dataRegister = new FormData(e.target);
 
         // post to checking the register to backend
-        fetch('http://localhost:5173/api/authentication/register', {
+        fetch('http://svelte-demo-mu.vercel.app/api/authentication/register', {
             method: 'POST',
             body: dataRegister
         })

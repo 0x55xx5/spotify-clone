@@ -154,7 +154,7 @@ const isDataValid = () => {
 };
 
 const populateAlbum =async () => {
-  await fetch(`http://localhost:5173/api/album/getalbums`, {
+  await fetch(`http://svelte-demo-mu.vercel.app/api/album/getalbums`, {
     method: 'GET',
     headers: {
       "apikey": getCookie("session_id")
@@ -179,7 +179,7 @@ const populateAlbum =async () => {
       console.error('Error:', error);
     });
  /* getAPI(
-    `http://localhost:5173/api/album/getallalbums`, (data) => {
+    `http://svelte-demo-mu.vercel.app/api/album/getallalbums`, (data) => {
       const jsonData = JSON.parse(data);
       const albums = jsonData.payload;
       const albumSelect = document.getElementById("album_lagu");
@@ -198,7 +198,7 @@ const populateAlbum =async () => {
 
 const songLayout = async(role) => {
   const id = new URLSearchParams(window.location.search).get("id");
-  await fetch(`http://localhost:5173/api/song/getsongbyid?id=${id}`, {
+  await fetch(`http://svelte-demo-mu.vercel.app/api/song/getsongbyid?id=${id}`, {
     method: 'GET',
     headers: {
       "apikey": getCookie("session_id")
@@ -315,7 +315,7 @@ const songLayout = async(role) => {
       console.error('Error:', error);
     });
  /* getAPI(
-    `http://localhost:5173/api/song/getsongbyid?id=${id}`, (data) => {
+    `http://svelte-demo-mu.vercel.app/api/song/getsongbyid?id=${id}`, (data) => {
       const jsonData = JSON.parse(data);
    
       const song = jsonData.data;
@@ -422,7 +422,7 @@ const songLayout = async(role) => {
   );*/
 };
 const isSongEditable =async () => {
-  await fetch('http://localhost:5173/api/authentication/userdata', {
+  await fetch('http://svelte-demo-mu.vercel.app/api/authentication/userdata', {
     method: 'POST',
     headers: {
       "apikey": getCookie("session_id")
