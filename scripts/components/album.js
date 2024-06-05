@@ -45,7 +45,13 @@ const updateAlbum = (e) => {
 }
 const albumLayout =async (role) => {
   const id = new URLSearchParams(window.location.search).get("id");
-  await fetch(`http://localhost:5173/api/album/getalbumDetails?id=${id}`)
+  await fetch(`http://localhost:5173/api/album/getalbumDetails?id=${id}`, {
+    method: 'GET',
+    headers: {
+      "apikey": getCookie("session_id")
+		}
+   
+  })
     .then(response => response.json())
     .then( jsonData => {
       const album = jsonData.data[0];
@@ -102,7 +108,13 @@ const albumLayout =async (role) => {
         `;
       }
 
-       fetch(`http://localhost:5173/api/album/getalbumSongs?album_id=${id}`)
+       fetch(`http://localhost:5173/api/album/getalbumSongs?album_id=${id}`, {
+        method: 'GET',
+        headers: {
+          "apikey": getCookie("session_id")
+        }
+       
+      })
         .then(response => response.json())
         .then(jsonData => {
           const songs = jsonData.data;
@@ -165,11 +177,12 @@ const deleteAlbum = () => {
     })
 }
 
-const isAlbumEditable = () => {
-  fetch('http://localhost:5173/api/authentication/userdata', {
+const isAlbumEditable =async () => {
+  await fetch('http://localhost:5173/api/authentication/userdata', {
     method: 'POST',
-    mode: 'cors',
-  //  headers: headers,
+    headers: {
+      "apikey": getCookie("session_id")
+		},
     body: JSON.stringify({"session_id": getCookie("session_id")}),
   })
     .then(response => response.json())

@@ -1,6 +1,12 @@
-const albumsLayout = (page) => {
+const albumsLayout =async (page) => {
   if (page > 0) {
-    fetch(`http://localhost:5173/api/album/getalbums?page=${page}`)
+    await fetch(`http://localhost:5173/api/album/getalbums?page=${page}`, {
+      method: 'GET',
+      headers: {
+        "apikey": getCookie("session_id")
+      }
+     
+    })
       .then(response => response.json())
       .then(jsonData => {
         albums = jsonData;

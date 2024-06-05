@@ -12,14 +12,28 @@ const populateAlbumSelector = () => {
   );
 };
 
-const setArtist = () => {
+const setArtist =async () => {
   const album_id = document.getElementById("album_lagu").value;
-  getAPI(
+  await fetch(`http://localhost:5173/api/api/album/getalbum.php?id=${album_id}`, {
+    method: 'GET',
+    headers: {
+      "apikey": getCookie("session_id")
+		}
+   
+  })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("penyanyi_lagu").value = data?.payload?.penyanyi;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  /*getAPI(
     `./api/album/getalbum.php?id=${album_id}`, (resp) => {
       const data = (JSON.parse(resp));
       document.getElementById("penyanyi_lagu").value = data?.payload?.penyanyi;
     },
-  );
+  );*/
 }
 
 populateAlbumSelector();

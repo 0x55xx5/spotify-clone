@@ -153,9 +153,33 @@ const isDataValid = () => {
   return true;
 };
 
-const populateAlbum = () => {
-  getAPI(
-    `./api/album/getallalbums`, (data) => {
+const populateAlbum =async () => {
+  await fetch(`http://localhost:5173/api/album/getalbums`, {
+    method: 'GET',
+    headers: {
+      "apikey": getCookie("session_id")
+		}
+   
+  })
+    .then(response => response.json())
+    .then(data => {
+      const albums = data;
+      const albumSelect = document.getElementById("album_lagu");
+      const albumDefault = document.getElementById("default-album");
+      albums.forEach((album) => {
+        if (album.id != albumDefault.value){
+          const option = document.createElement("option");
+          option.value = album.id;
+          option.text = album.judul;
+          albumSelect.appendChild(option);
+        }
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+ /* getAPI(
+    `http://localhost:5173/api/album/getallalbums`, (data) => {
       const jsonData = JSON.parse(data);
       const albums = jsonData.payload;
       const albumSelect = document.getElementById("album_lagu");
@@ -169,12 +193,128 @@ const populateAlbum = () => {
         }
       });
     },
-  );
+  );*/
 }
 
-const songLayout = (role) => {
+const songLayout = async(role) => {
   const id = new URLSearchParams(window.location.search).get("id");
-  getAPI(
+  await fetch(`http://localhost:5173/api/song/getsongbyid?id=${id}`, {
+    method: 'GET',
+    headers: {
+      "apikey": getCookie("session_id")
+		}
+   
+  })
+    .then(response => response.json())
+    .then(data => {
+      const jsonData = data;
+      const song = jsonData.data;
+      if (role === "admin") {
+        document.getElementById("page").innerHTML = `
+          <div class="song-detail-header">
+            <img class="song-img" src="${song.image_path}" alt=""/>
+            <div class="song-detail-title">
+              <strong>${song.judul}</strong>
+              <p>${song.penyanyi} - ${(song.duration/60) >> 0}:${("0" + song.duration%60).slice(-2)}</p>
+            </div>
+            <img 
+              class="song-play play-song-button"
+              data-image="${song.image_path}"
+              data-audio="${song.audio_path}"
+              data-judul="${song.judul}"
+              data-penyanyi="${song.penyanyi}"
+              src="./assets/image/play-btn-black.png" 
+            alt=""/>
+          </div>
+          <div class="song-detail view-scroll" id="song-detail">
+            <img class="edit-icon" src="./assets/image/edit.png" alt=""/>
+            <form enctype="multipart/form-data" method="post" onsubmit="updateSong(event)" id="edit-song">
+              <div class="song-detail-container" id="judul">
+                <label>Judul</label>
+                <input type="text" id="judul_lagu" name="judul" placeholder="${song.judul}" value="${song.judul}" required/>
+              </div>
+              <div class="song-detail-container" id="tanggal_terbit">
+                <label>Tanggal Terbit</label>
+                <input type="text" name="tanggalterbit_lagu" id="tanggalterbit_lagu" value="${song.tanggal_terbit}" placeholder="${song.tanggal_terbit}" required/>
+              </div>
+              <div class="song-detail-container" id="audio_path" data-value="${song.audio_path}">
+                <label>Audio Path</label>
+                <input type="file" name="file_lagu" id="file_lagu" accept=".mp3"/>
+              </div>
+              <div class="song-detail-container" id="image_path" data-value="${song.image_path}">
+                <label>Image Path</label>
+                <input type="file" name="image_lagu" id="image_lagu" accept=".png, .jpg, .jpeg"/>
+              </div>
+              <div class="song-detail-container" id="genre">
+                <label>Genre</label>
+                <input type="text" name="genre_lagu" id="genre_lagu" value="${song.genre}" placeholder="${song.genre}" required/>
+              </div>
+              <div class="song-detail-container" id="album_name" value="${song.id}">
+                <label>Judul Album</label>
+                <select name="album_lagu" id="album_lagu">
+                  <option id="default-album" value="${song.id}">${song.album.judul}</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="submit-delete" id="song-list">
+            <button type="button" class="delete-song" onclick="deleteSong()">
+              Delete
+            </button>
+            <input type="submit" form="edit-song" value="Submit" id="uploadForm" name="submit"/>
+          </div>
+        </div>
+        `;
+      } else {
+        document.getElementById("page").innerHTML = `
+          <div class="song-detail-header">
+            <img class="song-img" src="${song.image_path}" alt=""/>
+            <div class="song-detail-title">
+              <strong>${song.judul}</strong>
+              <p>Song Detail</p>
+            </div>
+            <img 
+              class="song-play play-song-button"
+              data-image="${song.image_path}"
+              data-audio="${song.audio_path}"
+              data-judul="${song.judul}"
+              data-penyanyi="${song.penyanyi}"
+              src="./assets/image/play-btn-black.png" 
+            alt=""/>
+          </div>
+          <div class="song-detail" id="song-detail">
+            <form enctype="multipart/form-data">
+              <div class="song-detail-container" id="penyanyi">
+                <label>Artist</label>
+                <div class="value">${song.penyanyi}</div>
+              </div>
+              <div class="song-detail-container" id="tanggal_terbit">
+                <label>Tanggal Terbit</label>
+                <div class="value">${song.tanggal_terbit}</div>
+              </div>
+              <div class="song-detail-container" id="duration">
+                <label>Duration</label>
+                <div class="value">${(song.duration/60) >> 0}:${("0" + song.duration%60).slice(-2)}</div>
+              </div>
+              <div class="song-detail-container" id="genre">
+                <label>Genre</label>
+                <div class="value">${song.genre}</div>
+              </div>
+              <div class="song-detail-container" id="album_name">
+                <label>Album</label>
+                <div class="value">${song.album.judul}</div>
+              </div>
+            </form>
+          </div>
+        </div>
+        `;
+      }
+      populateAlbum();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+ /* getAPI(
     `http://localhost:5173/api/song/getsongbyid?id=${id}`, (data) => {
       const jsonData = JSON.parse(data);
    
@@ -219,10 +359,10 @@ const songLayout = (role) => {
               <label>Genre</label>
               <input type="text" name="genre_lagu" id="genre_lagu" value="${song.genre}" placeholder="${song.genre}" required/>
             </div>
-            <div class="song-detail-container" id="album_name" value="${song.album_id}">
+            <div class="song-detail-container" id="album_name" value="${song.id}">
               <label>Judul Album</label>
               <select name="album_lagu" id="album_lagu">
-                <option id="default-album" value="${song.album_id}">${song.judul_album}</option>
+                <option id="default-album" value="${song.id}">${song.album.judul}</option>
               </select>
             </div>
             </form>
@@ -271,7 +411,7 @@ const songLayout = (role) => {
             </div>
             <div class="song-detail-container" id="album_name">
               <label>Album</label>
-              <div class="value">${song.judul_album}</div>
+              <div class="value">${song.album.judul}</div>
             </div>
           </form
         </div>
@@ -279,13 +419,14 @@ const songLayout = (role) => {
       }
       populateAlbum();
     },
-  );
+  );*/
 };
 const isSongEditable =async () => {
   await fetch('http://localhost:5173/api/authentication/userdata', {
     method: 'POST',
-    mode: 'cors',
-  //  headers: headers,
+    headers: {
+      "apikey": getCookie("session_id")
+		},
     body: JSON.stringify({"session_id": getCookie("session_id")}),
   })
     .then(response => response.json())

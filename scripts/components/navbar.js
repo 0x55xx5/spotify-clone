@@ -107,13 +107,16 @@ const populateData = () => {
 };*/
 const headers = {'Content-Type':'application/json',
                     'Access-Control-Allow-Origin':'*',
-                    'Access-Control-Allow-Methods':'POST,PATCH,OPTIONS'}
+                    'Access-Control-Allow-Methods':'*',
+                    "apikey":getCookie("session_id")}
+
 
 const isThisAdmin =async () => {
   await fetch('http://localhost:5173/api/authentication/userdata', {
     method: 'POST',
-    mode: 'cors',
-  //  headers: headers,
+    headers: {
+      "apikey": getCookie("session_id")
+		},
     body: JSON.stringify({"session_id": getCookie("session_id")}),
   })
     .then((response) => response.json())
@@ -139,5 +142,4 @@ const isThisAdmin =async () => {
     });
  
 };
-
 isThisAdmin();

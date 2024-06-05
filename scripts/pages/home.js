@@ -1,6 +1,12 @@
 const songsLayout =async (page) => {
   if (page > 0) {
-    await fetch(`http://localhost:5173/api/song/getallsongs?page=${page}`)
+    await fetch(`http://localhost:5173/api/song/getallsongs?page=${page}`, {
+      method: 'GET',
+      headers: {
+        "apikey": getCookie("session_id")
+      }
+     
+    })
       .then(response => response.json())
       .then(jsonData => {
         songs = jsonData;
@@ -9,7 +15,7 @@ const songsLayout =async (page) => {
               <div id="songs" class="song-list-container">`;
 
         str += songs.map(song =>
-            `<div class="song-list" data-value="${song.song_id}"
+            `<div class="song-list" data-value="${song.id}"
               data-image="${song.image_path}"
               data-audio="${song.audio_path}"
               data-judul="${song.judul}"
@@ -48,7 +54,6 @@ const songsLayout =async (page) => {
    
   }
 }
-
 songsLayout(1);
 
 const clickSongDetail = (id) => {

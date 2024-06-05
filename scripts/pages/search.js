@@ -1,8 +1,30 @@
 
-const populateData = () => {
+const populateData =async () => {
  
   var str='';
-  getAPI("http://localhost:5173/api/song/genre", (data) => {
+  await fetch("http://localhost:5173/api/song/genre", {
+    method: 'GET',
+    headers: {
+      "apikey": getCookie("session_id")
+		}
+   
+  })
+    .then(response => response.json())
+    .then(jsonData => {
+      const genres = jsonData;
+      const genreSelect = document.getElementById("genre");
+
+      genres.data.forEach((genre) => {
+        const option = document.createElement("option");
+        option.value = genre;
+        option.innerHTML = genre;
+        genreSelect.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+ /* getAPI("http://localhost:5173/api/song/genre", (data) => {
     const jsonData = JSON.parse(data);
     const genres = jsonData;
     console.log(genres);
@@ -16,12 +38,18 @@ const populateData = () => {
       
     });
    
-  });
+  });*/
 }
 
 const populateData2 =async() => {
  
-await fetch("http://localhost:5173/api/song/genre")
+await fetch("http://localhost:5173/api/song/genre", {
+  method: 'GET',
+  headers: {
+    "apikey": getCookie("session_id")
+  }
+ 
+})
   .then(response => response.json())
   .then(jsonData => {
     const genres = jsonData;
@@ -49,7 +77,13 @@ const searchLayout =async (query, filter, sort, page) => {
     } else {
       apiCall = `http://localhost:5173/api/search?q=${query}&filter=${filter}&sort=${sort}&page=${page}`;
     }
-   await fetch(apiCall)
+   await fetch(apiCall, {
+    method: 'GET',
+    headers: {
+      "apikey": getCookie("session_id")
+		}
+   
+  })
       .then(response => response.json())
       .then(jsonData => {
         songs = jsonData;
