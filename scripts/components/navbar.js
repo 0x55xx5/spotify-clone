@@ -105,10 +105,10 @@ const populateData = () => {
   albumDetail.append('session_id',  getCookie("session_id"));
   return albumDetail;
 };*/
-const headers = {'Content-Type':'application/json',
-                    'Access-Control-Allow-Origin':'*',
-                    'Access-Control-Allow-Methods':'*',
-                    "apikey":getCookie("session_id")}
+// const headers = {'Content-Type':'application/json',
+//                     'Access-Control-Allow-Origin':'*',
+//                     'Access-Control-Allow-Methods':'*',
+//                     "apikey":getCookie("session_id")}
 
 
 const isThisAdmin =async () => {

@@ -51,7 +51,7 @@ const callbackRegisters = (data) => {
     }
 }
 
-const registered = (e) => {
+const registered =async (e) => {
     e.preventDefault();
 
     if (matchPass()) {
@@ -59,12 +59,28 @@ const registered = (e) => {
         const dataRegister = new FormData(e.target);
 
         // post to checking the register to backend
-        fetch('https://svelte-demo-mu.vercel.app/api/authentication/register', {
+        await fetch('http://localhost:5173/api/authentication/register', {
             method: 'POST',
             body: dataRegister
         })
             .then(response => response.json())
-            .then(data => callbackRegisters(JSON.stringify(data)))
+            .then(result => {
+                 // check the status
+                    if (result.hasOwnProperty('status') && result['status'] === 'success') {
+                        deleteCookie();
+                        //存入後端發放的驗證token到 cookie
+                        const session_id = result['sessionToken'];
+                        setCookie(session_id, 1800);
+                    
+                    } else {
+                        alert('Login failed!');
+                    }
+            })
+            .then(() => { 
+                if(getCookie("session_id")){
+                    window.location = './index.html';
+                }
+            })
             .catch(error => console.log('Register failed!', error));
        
     } else {
