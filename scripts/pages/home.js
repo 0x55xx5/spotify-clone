@@ -1,6 +1,6 @@
 const songsLayout =async (page) => {
   if (page > 0) {
-    await fetch(`http://svelte-demo-mu.vercel.app/api/song/getallsongs?page=${page}`, {
+    await fetch(`https://svelte-demo-mu.vercel.app/api/song/getallsongs?page=${page}`, {
       method: 'GET',
       headers: {
         "apikey": getCookie("session_id")

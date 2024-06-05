@@ -14,7 +14,7 @@ const populateAlbumSelector = () => {
 
 const setArtist =async () => {
   const album_id = document.getElementById("album_lagu").value;
-  await fetch(`http://svelte-demo-mu.vercel.app/api/api/album/getalbum.php?id=${album_id}`, {
+  await fetch(`https://svelte-demo-mu.vercel.app/api/api/album/getalbum.php?id=${album_id}`, {
     method: 'GET',
     headers: {
       "apikey": getCookie("session_id")

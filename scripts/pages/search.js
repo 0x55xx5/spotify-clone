@@ -2,7 +2,7 @@
 const populateData =async () => {
  
   var str='';
-  await fetch("http://svelte-demo-mu.vercel.app/api/song/genre", {
+  await fetch("https://svelte-demo-mu.vercel.app/api/song/genre", {
     method: 'GET',
     headers: {
       "apikey": getCookie("session_id")
@@ -24,7 +24,7 @@ const populateData =async () => {
     .catch(error => {
       console.error('Error:', error);
     });
- /* getAPI("http://svelte-demo-mu.vercel.app/api/song/genre", (data) => {
+ /* getAPI("https://svelte-demo-mu.vercel.app/api/song/genre", (data) => {
     const jsonData = JSON.parse(data);
     const genres = jsonData;
     console.log(genres);
@@ -43,7 +43,7 @@ const populateData =async () => {
 
 const populateData2 =async() => {
  
-await fetch("http://svelte-demo-mu.vercel.app/api/song/genre", {
+await fetch("https://svelte-demo-mu.vercel.app/api/song/genre", {
   method: 'GET',
   headers: {
     "apikey": getCookie("session_id")
@@ -73,9 +73,9 @@ const searchLayout =async (query, filter, sort, page) => {
     let apiCall;
 
     if (filter == ""){
-      apiCall = `http://svelte-demo-mu.vercel.app/api/search?q=${query}&sort=${sort}&page=${page}&filter=genre`;
+      apiCall = `https://svelte-demo-mu.vercel.app/api/search?q=${query}&sort=${sort}&page=${page}&filter=genre`;
     } else {
-      apiCall = `http://svelte-demo-mu.vercel.app/api/search?q=${query}&filter=${filter}&sort=${sort}&page=${page}`;
+      apiCall = `https://svelte-demo-mu.vercel.app/api/search?q=${query}&filter=${filter}&sort=${sort}&page=${page}`;
     }
    await fetch(apiCall, {
     method: 'GET',

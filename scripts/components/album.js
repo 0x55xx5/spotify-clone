@@ -45,7 +45,7 @@ const updateAlbum = (e) => {
 }
 const albumLayout =async (role) => {
   const id = new URLSearchParams(window.location.search).get("id");
-  await fetch(`http://svelte-demo-mu.vercel.app/api/album/getalbumDetails?id=${id}`, {
+  await fetch(`https://svelte-demo-mu.vercel.app/api/album/getalbumDetails?id=${id}`, {
     method: 'GET',
     headers: {
       "apikey": getCookie("session_id")
@@ -108,7 +108,7 @@ const albumLayout =async (role) => {
         `;
       }
 
-       fetch(`http://svelte-demo-mu.vercel.app/api/album/getalbumSongs?album_id=${id}`, {
+       fetch(`https://svelte-demo-mu.vercel.app/api/album/getalbumSongs?album_id=${id}`, {
         method: 'GET',
         headers: {
           "apikey": getCookie("session_id")
@@ -178,7 +178,7 @@ const deleteAlbum = () => {
 }
 
 const isAlbumEditable =async () => {
-  await fetch('http://svelte-demo-mu.vercel.app/api/authentication/userdata', {
+  await fetch('https://svelte-demo-mu.vercel.app/api/authentication/userdata', {
     method: 'POST',
     headers: {
       "apikey": getCookie("session_id")
