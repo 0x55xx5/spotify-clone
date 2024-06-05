@@ -59,7 +59,7 @@ const registered =async (e) => {
         const dataRegister = new FormData(e.target);
 
         // post to checking the register to backend
-        await fetch('http://localhost:5173/api/authentication/register', {
+        await fetch('https://svelte-demo-mu.vercel.app/api/authentication/register', {
             method: 'POST',
             body: dataRegister
         })

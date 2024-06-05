@@ -39,7 +39,6 @@ const logined = async(e) => {
             }
         }) .then(() => { 
             if(getCookie("session_id")){
-                alert();
                 window.location = './index.html';
             }
         })
