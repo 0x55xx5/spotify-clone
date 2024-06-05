@@ -59,7 +59,14 @@ const registered = (e) => {
         const dataRegister = new FormData(e.target);
 
         // post to checking the register to backend
-        postAPI('http://localhost:5173/api/authentication/register', callbackRegisters, dataRegister);
+        fetch('http://localhost:5173/api/authentication/register', {
+            method: 'POST',
+            body: dataRegister
+        })
+            .then(response => response.json())
+            .then(data => callbackRegisters(JSON.stringify(data)))
+            .catch(error => console.log('Register failed!', error));
+       
     } else {
         alert('Password does not match!');
     }
