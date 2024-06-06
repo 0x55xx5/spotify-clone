@@ -80,35 +80,7 @@ const playSong =async (song_img, song_path, song_title, song_artist) =>  {
         .catch(error => {
             console.error('Error:', error);
         });
-  /* getAPI('https://svelte-demo-mu.vercel.app/api/authentication/userdata', (data) => {
-        const userdata = JSON.parse(data);
-        if (userdata.hasOwnProperty('status') && userdata['status'] === 'error') {
-            const ls = window.localStorage;
-            const limit = JSON.parse(ls.getItem("user"));
-            const today = new Date();
-            let date = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`
-            
-            if (limit) {
-                if (limit.amount === 3 && limit.date === date) {
-                    alert("Today's max limit reached. Log in for unlimited streams or come back tomorrow!");
-                    window.location.href = `${window.location.protocol}//${window.location.host}/login.html`;
-                } else {
-                    let amount = 0;
-                    if (limit.date === date) {
-                        amount = limit.amount + 1;
-                    }
-                    ls.setItem("user", JSON.stringify({amount: amount, date: date}));
-                    setPlayer(song_img, song_path, song_title, song_artist);
-                }
-            } else {
-                const amount = 1;
-                ls.setItem("user", JSON.stringify({amount: amount, date: date}));
-                setPlayer(song_img, song_path, song_title, song_artist);
-            }
-        } else {
-            setPlayer(song_img, song_path, song_title, song_artist);
-        }
-    });*/
+ 
 }
 
 const setPlayer = (song_img, song_path, song_title, song_artist) => {

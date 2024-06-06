@@ -178,22 +178,7 @@ const populateAlbum =async () => {
     .catch(error => {
       console.error('Error:', error);
     });
- /* getAPI(
-    `https://svelte-demo-mu.vercel.app/api/album/getallalbums`, (data) => {
-      const jsonData = JSON.parse(data);
-      const albums = jsonData.payload;
-      const albumSelect = document.getElementById("album_lagu");
-      const albumDefault = document.getElementById("default-album");
-      albums.forEach((album) => {
-        if (album.album_id != albumDefault.value){
-          const option = document.createElement("option");
-          option.value = album.album_id;
-          option.text = album.judul;
-          albumSelect.appendChild(option);
-        }
-      });
-    },
-  );*/
+
 }
 
 const songLayout = async(role) => {
