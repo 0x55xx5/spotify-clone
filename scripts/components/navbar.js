@@ -31,11 +31,11 @@ const navbarLayout = (role, loginStatus) => {
               <img src="./assets/image/menu-burger.png"/>
               <div class="navbar-text">Album List</div>
             </div>
-            <div class="feature-group" onClick="alert("想試用無損音質嗎?試聽到期立即訂閱升級")">
+            <div class="feature-group" onClick="alert('想試用無損音質嗎?試聽到期立即訂閱升級');">
               <img src="./assets/image/song.png"/>
               <div class="navbar-text">Premium Song</div>
             </div>
-            <div class="feature-group" onClick="alert("想嘗鮮獨家簽約歌手作品嗎?試聽到期立即訂閱升級")">
+            <div class="feature-group" onClick="alert('想嘗鮮獨家簽約歌手作品嗎?試聽到期立即訂閱升級');">
               <img src="./assets/image/microphone.png"/>
               <div class="navbar-text">Premium Singer</div>
             </div>
