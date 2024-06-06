@@ -50,31 +50,34 @@ const playSong =async (song_img, song_path, song_title, song_artist) =>  {
     })
         .then(response => response.json())
         .then(userdata => {
-            if (userdata.hasOwnProperty('status') && userdata['status'] === 'error') {
-                const ls = window.localStorage;
+            const ls = window.localStorage;
+           
+            if(userdata.hasOwnProperty('status')&&ls.getItem("user")==null){
+                const today = new Date();
+                let date = (today.getTime())/1000;
+                console.log(date);
+                ls.setItem("user", JSON.stringify({amount: 0, date: date}));
+                setPlayer(song_img, song_path, song_title, song_artist);
+                return;
+            }
+            if (userdata.hasOwnProperty('status')) {
+                
                 const limit = JSON.parse(ls.getItem("user"));
                 const today = new Date();
-                let date = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`
-                
-                if (limit) {
-                    if (limit.amount === 3 && limit.date === date) {
-                        alert("Today's max limit reached. Log in for unlimited streams or come back tomorrow!");
-                        window.location.href = `${window.location.protocol}//${window.location.host}/login.html`;
-                    } else {
-                        let amount = 0;
-                        if (limit.date === date) {
-                            amount = limit.amount + 1;
-                        }
-                        ls.setItem("user", JSON.stringify({amount: amount, date: date}));
-                        setPlayer(song_img, song_path, song_title, song_artist);
-                    }
+                let date = (today.getTime())/1000;
+                let hoursDiff = (date - limit.date) / 3600;
+
+              
+                if (hoursDiff >= 24) {
+                    alert("24H試用期已結束請升級訂閱 保存你的最愛歌曲");
+                    window.location.href = `${window.location.protocol}//${window.location.host}/pay.html`;
                 } else {
-                    const amount = 1;
-                    ls.setItem("user", JSON.stringify({amount: amount, date: date}));
+                    let amount=limit.amount+1;
+                    ls.setItem("user", JSON.stringify({amount: amount, date: limit.date}));
                     setPlayer(song_img, song_path, song_title, song_artist);
                 }
             } else {
-                setPlayer(song_img, song_path, song_title, song_artist);
+                alert("暫時發生技術問題請稍後再試");
             }
         })
         .catch(error => {
