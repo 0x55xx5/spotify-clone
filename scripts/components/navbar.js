@@ -31,7 +31,14 @@ const navbarLayout = (role, loginStatus) => {
               <img src="./assets/image/menu-burger.png"/>
               <div class="navbar-text">Album List</div>
             </div>
-           
+            <div class="feature-group" onClick="">
+              <img src="./assets/image/song.png"/>
+              <div class="navbar-text">Premium Song</div>
+            </div>
+            <div class="feature-group" onClick="">
+              <img src="./assets/image/microphone.png"/>
+              <div class="navbar-text">Premium Singer</div>
+            </div>
             <br/>
         ${
           role === "admin"
